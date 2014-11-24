@@ -55,7 +55,10 @@ othrNames = gsub('-mean', 'Mean', othrNames)
 othrNames = gsub('-std', 'Std', othrNames)
 othrNames = gsub('[-()]', '', othrNames)
 xjoinData<- xjoinData[, meanstdData]
+colnames(xjoinData) <- othrNames
 finalData<- cbind( yjoinData, subjectjoinData, xjoinData)
-colnames(finalData) <- othrNames
+
 
 ## From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+newData <- aggregate(finalData[,-(1:2)], by=list(activity=finalData$activity, subject=finalData$subject), mean)
+write.table(newData, "newData.txt", row.names=FALSE, sep="\t")
